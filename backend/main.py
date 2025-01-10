@@ -13,6 +13,7 @@ import os
 app = FastAPI()
 
 # Enable CORS
+#just minor change
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # For testing; restrict origins in production
