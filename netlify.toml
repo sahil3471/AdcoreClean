@@ -1,5 +1,5 @@
 [build]
-  command = "ng build"
+  command = "npm install -g @angular/cli && npm install && ng build --configuration production"
   publish = "frontend/adcore-payments-ui/dist/adcore-payments-ui"
 
 [[redirects]]
