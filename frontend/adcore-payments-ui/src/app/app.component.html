@@ -1,0 +1,32 @@
+<div class="container">
+  <h1>Payments</h1>
+  <button class="btn-add" (click)="onAddPayment()">Add New Payment</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payment of payments; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ payment.payee_first_name }} {{ payment.payee_last_name }}</td>
+        <td>${{ payment.due_amount }}</td>
+        <td>{{ payment.payee_payment_status }}</td>
+        <td>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+</div>

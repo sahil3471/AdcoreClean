@@ -1,0 +1,59 @@
+<div class="form-container">
+    <h2>Add New Payment</h2>
+    <form (ngSubmit)="onSubmit()" #paymentForm="ngForm" class="payment-form">
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input
+          id="firstName"
+          type="text"
+          [(ngModel)]="newPayment.payee_first_name"
+          name="firstName"
+          required
+          placeholder="Enter first name"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input
+          id="lastName"
+          type="text"
+          [(ngModel)]="newPayment.payee_last_name"
+          name="lastName"
+          required
+          placeholder="Enter last name"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="dueAmount">Due Amount:</label>
+        <input
+          id="dueAmount"
+          type="number"
+          [(ngModel)]="newPayment.due_amount"
+          name="dueAmount"
+          required
+          placeholder="Enter due amount"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select
+          id="status"
+          [(ngModel)]="newPayment.payee_payment_status"
+          name="status"
+          required
+        >
+          <option value="pending">Pending</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+  
+      <div class="button-group">
+        <button type="submit" class="btn-submit">Add Payment</button>
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  

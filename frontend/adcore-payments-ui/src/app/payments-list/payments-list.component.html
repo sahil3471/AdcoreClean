@@ -1,0 +1,183 @@
+<!-- payments-list.component.html -->
+
+<div class="payments-list-container">
+    <h2>Payments List</h2>
+    
+    <!-- Control Panel -->
+    <div class="control-panel">
+      <!-- Add New Entry Button -->
+      <button class="add-entry-button" (click)="onAddPayment()">+ Add New Entry</button>
+      
+      <!-- Search and Filter -->
+      <div class="search-filter">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="currentPage = 1; fetchPayments()"
+          class="search-input"
+        />
+        
+        <select
+          [(ngModel)]="filterStatus"
+          (ngModelChange)="currentPage = 1; fetchPayments()"
+          class="filter-select"
+        >
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+      
+      <!-- Sorting -->
+      <div class="sorting">
+        <span>Sort by:</span>
+        <button class="sort-button" (click)="sortBy('payee_first_name')">
+          First Name
+          <span *ngIf="sortField === 'payee_first_name'">
+            {{ sortOrder === 'asc' ? '▲' : '▼' }}
+          </span>
+        </button>
+        <button class="sort-button" (click)="sortBy('payee_last_name')">
+          Last Name
+          <span *ngIf="sortField === 'payee_last_name'">
+            {{ sortOrder === 'asc' ? '▲' : '▼' }}
+          </span>
+        </button>
+        <button class="sort-button" (click)="sortBy('due_amount')">
+          Due Amount
+          <span *ngIf="sortField === 'due_amount'">
+            {{ sortOrder === 'asc' ? '▲' : '▼' }}
+          </span>
+        </button>
+        <button class="sort-button" (click)="sortBy('payee_payment_status')">
+          Status
+          <span *ngIf="sortField === 'payee_payment_status'">
+            {{ sortOrder === 'asc' ? '▲' : '▼' }}
+          </span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Payments Table -->
+    <table class="payments-table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Due Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of payments">
+          <!-- First Name -->
+          <td>
+            <span *ngIf="editingId !== payment.id">{{ payment.payee_first_name }}</span>
+            <input
+              *ngIf="editingId === payment.id"
+              [(ngModel)]="payment.payee_first_name"
+              type="text"
+              class="edit-input"
+            />
+          </td>
+  
+          <!-- Last Name -->
+          <td>
+            <span *ngIf="editingId !== payment.id">{{ payment.payee_last_name }}</span>
+            <input
+              *ngIf="editingId === payment.id"
+              [(ngModel)]="payment.payee_last_name"
+              type="text"
+              class="edit-input"
+            />
+          </td>
+  
+          <!-- Due Amount -->
+          <td>
+            <span *ngIf="editingId !== payment.id">{{ payment.due_amount | currency }}</span>
+            <input
+              *ngIf="editingId === payment.id"
+              [(ngModel)]="payment.due_amount"
+              type="number"
+              class="edit-input"
+            />
+          </td>
+  
+          <!-- Status -->
+          <td>
+            <span *ngIf="editingId !== payment.id">{{ payment.payee_payment_status }}</span>
+            <select
+              *ngIf="editingId === payment.id"
+              [(ngModel)]="payment.payee_payment_status"
+              class="edit-select"
+            >
+              <option value="pending">Pending</option>
+              <option value="overdue">Overdue</option>
+            </select>
+          </td>
+  
+          <!-- Actions -->
+          <td class="actions">
+            <button
+              class="btn btn-edit"
+              *ngIf="editingId !== payment.id"
+              (click)="onEdit(payment.id || '')"
+            >
+              Edit
+            </button>
+            <button
+              class="btn btn-save"
+              *ngIf="editingId === payment.id"
+              (click)="onSave(payment)"
+            >
+              Save
+            </button>
+            <button
+              class="btn btn-cancel"
+              *ngIf="editingId === payment.id"
+              (click)="onCancelEdit()"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn btn-delete"
+              (click)="onDelete(payment.id || '')"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      <button
+        class="pagination-button"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1"
+      >
+        Previous
+      </button>
+      
+      <span class="pagination-info">
+        Page {{ currentPage }} of {{ totalPages }}
+      </span>
+      
+      <button
+        class="pagination-button"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+      >
+        Next
+      </button>
+    </div>
+    
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+  </div>
+  
