@@ -12,6 +12,12 @@ import os
 
 app = FastAPI()
 
+origins = [
+    "https://adcorefullstack.netlify.app",
+    "https://www.adcorefullstack.netlify.app",
+    # Add other origins if necessary
+]
+
 # Enable CORS
 #just minor change
 app.add_middleware(
