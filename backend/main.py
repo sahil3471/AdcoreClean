@@ -1,5 +1,3 @@
-# main.py
-
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 from typing import List, Optional
@@ -9,6 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from models import Payment, PaymentResponse, PaymentsResponse
 import os
+import requests  # Added import
+import threading  # Added import
+import time  # Added import
 
 app = FastAPI()
 
@@ -19,7 +20,6 @@ origins = [
 ]
 
 # Enable CORS
-#just minor change
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # For testing; restrict origins in production
@@ -30,16 +30,13 @@ app.add_middleware(
 
 load_dotenv()
 
-# Example endpoint
-@app.get("/test-connection")
-def test_connection():
-    return {"status": "connected"}
+# Removed the initial synchronous /test-connection endpoint to avoid duplication
 
-# 1) Self-ping function
+# Self-ping function
 def keep_alive():
     # Replace below with your actual Render URL
-    url = "https://your-render-app-name.onrender.com/test-connection"
-    interval = 30  # seconds
+    url = "https://adcoreclean.onrender.com//test-connection"  # <-- Replace with your Render URL
+    interval = 15  # seconds
 
     while True:
         try:
@@ -49,7 +46,7 @@ def keep_alive():
             print(f"[Self-Ping] Error: {str(e)}")
         time.sleep(interval)
 
-# 2) Start the keep_alive ping in a background thread
+# Start the keep_alive ping in a background thread
 def start_keep_alive():
     t = threading.Thread(target=keep_alive, daemon=True)
     t.start()
