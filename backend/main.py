@@ -35,7 +35,7 @@ load_dotenv()
 # Self-ping function
 def keep_alive():
     # Replace below with your actual Render URL
-    url = "https://adcoreclean.onrender.com//test-connection"  # <-- Replace with your Render URL
+    url = "https://adcoreclean.onrender.com/test-connection"  # <-- Replace with your Render URL
     interval = 15  # seconds
 
     while True:
