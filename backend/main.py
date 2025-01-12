@@ -30,6 +30,35 @@ app.add_middleware(
 
 load_dotenv()
 
+# Example endpoint
+@app.get("/test-connection")
+def test_connection():
+    return {"status": "connected"}
+
+# 1) Self-ping function
+def keep_alive():
+    # Replace below with your actual Render URL
+    url = "https://your-render-app-name.onrender.com/test-connection"
+    interval = 30  # seconds
+
+    while True:
+        try:
+            response = requests.get(url)
+            print(f"[Self-Ping] {url} => {response.status_code}")
+        except Exception as e:
+            print(f"[Self-Ping] Error: {str(e)}")
+        time.sleep(interval)
+
+# 2) Start the keep_alive ping in a background thread
+def start_keep_alive():
+    t = threading.Thread(target=keep_alive, daemon=True)
+    t.start()
+
+# Start the self-ping once the app starts
+@app.on_event("startup")
+def on_startup():
+    start_keep_alive()
+
 # MongoDB Connection
 MONGO_URI = os.getenv("MONGO_URI")
 client = AsyncIOMotorClient(MONGO_URI)
